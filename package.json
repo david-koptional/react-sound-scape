@@ -1,7 +1,7 @@
 {
   "name": "react-soundscape",
   "private": false,
-  "version": "1.0.3",
+  "version": "1.0.5",
   "type": "module",
   "main": "dist/react-soundscape.umd.js",
   "module": "dist/react-soundscape.es.js",

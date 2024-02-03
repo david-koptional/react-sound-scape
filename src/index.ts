@@ -1,5 +1,15 @@
+import { FrequencyLineGraph } from "./CanvasFrequencyLineGraph";
+import { FrequencyBars } from "./CanvasFrequencyBars";
 import { RespondToBass } from "./RespondToBass";
-import { AudioAnalysisProvider } from "./AudioAnalysisContext";
-import { SharedAudioProvider } from "./AudioContext";
+import { AudioAnalysisProvider, useAudioAnalysis } from "./AudioAnalysisContext";
+import { SharedAudioProvider, useSharedAudio } from "./AudioContext";
 
-export { SharedAudioProvider, AudioAnalysisProvider, RespondToBass };
+export {
+  SharedAudioProvider,
+  AudioAnalysisProvider,
+  RespondToBass,
+  FrequencyBars,
+  FrequencyLineGraph,
+  useAudioAnalysis,
+  useSharedAudio,
+};
