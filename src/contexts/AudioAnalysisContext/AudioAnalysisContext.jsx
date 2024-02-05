@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { useSharedAudio } from "./AudioContext";
+import { useSharedAudio } from "../SharedAudioContext/AudioContext";
 // Create the context
 const AudioAnalysisContext = createContext(null);
 // Create the provider component

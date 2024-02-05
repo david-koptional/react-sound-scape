@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { motion, useAnimation } from "framer-motion";
-import { useAudioAnalysis } from "./AudioAnalysisContext";
+import { useAudioAnalysis } from "../..";
 
 interface RespondToBassProps {
   children: React.ReactNode | React.ReactNode[];

@@ -1,4 +1,4 @@
-import { useAudioAnalysis } from "./AudioAnalysisContext";
+import { useAudioAnalysis } from "../../contexts/AudioAnalysisContext/AudioAnalysisContext";
 import { useEffect, useRef } from "react";
 
 interface FrequencyBarsProps {

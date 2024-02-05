@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { motion, useAnimation } from "framer-motion";
-import { useAudioAnalysis } from "./AudioAnalysisContext";
+import { useAudioAnalysis } from "../..";
 export const RespondToBass = ({ children, rotate = false, maxScaleMultiplier = 0.1, maxRotateMultiplier = 1, animationDuration = 0.01, easingFunction = "easeOut", maxBassLevel = 2550, initialScale = 1, initialRotation = 0, className, style, onBassChange, animationThreshold = 0, }) => {
     const { bassLevel } = useAudioAnalysis();
     const controls = useAnimation();

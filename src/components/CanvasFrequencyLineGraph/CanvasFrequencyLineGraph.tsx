@@ -1,5 +1,5 @@
-import { useAudioAnalysis } from "./AudioAnalysisContext";
-import { useSharedAudio } from "./AudioContext";
+import { useAudioAnalysis } from "../../contexts/AudioAnalysisContext/AudioAnalysisContext";
+import { useSharedAudio } from "../../contexts/SharedAudioContext/AudioContext";
 import { useEffect, useRef } from "react";
 
 interface FrequencyLineGraphProps {

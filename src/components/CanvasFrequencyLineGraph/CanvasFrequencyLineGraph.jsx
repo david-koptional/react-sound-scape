@@ -1,5 +1,5 @@
-import { useAudioAnalysis } from "./AudioAnalysisContext";
-import { useSharedAudio } from "./AudioContext";
+import { useAudioAnalysis } from "../../contexts/AudioAnalysisContext/AudioAnalysisContext";
+import { useSharedAudio } from "../../contexts/SharedAudioContext/AudioContext";
 import { useEffect, useRef } from "react";
 export const FrequencyLineGraph = ({ width, height, color = "#728b93", }) => {
     const { isAudioPlaying } = useSharedAudio();
