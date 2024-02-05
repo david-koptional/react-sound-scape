@@ -1,4 +1,4 @@
-import { useAudioAnalysis } from "./AudioAnalysisContext";
+import { useAudioAnalysis } from "../../contexts/AudioAnalysisContext/AudioAnalysisContext";
 import { useEffect, useRef } from "react";
 export const FrequencyBars = ({ width, height, color = "#728b93", widthMultiplier = 2.5, }) => {
     const { dataArray } = useAudioAnalysis();
