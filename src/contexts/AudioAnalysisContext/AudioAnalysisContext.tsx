@@ -10,27 +10,6 @@ interface AudioAnalysisData {
   bassLevel: number;
 }
 
-const featureExtractors: MeydaAudioFeature[] = [
-  "amplitudeSpectrum",
-  "spectralCentroid",
-  "spectralRolloff",
-  "spectralFlatness",
-  "spectralSlope",
-  "spectralSpread",
-  "spectralSkewness",
-  "spectralKurtosis",
-  "zcr",
-  "loudness",
-  "perceptualSpread",
-  "perceptualSharpness",
-  "mfcc",
-  "rms",
-  "energy",
-  "chroma",
-  "spectralFlux",
-  "buffer",
-];
-
 // Create the context
 const AudioAnalysisContext = createContext<AudioAnalysisData | null>(null);
 
@@ -64,9 +43,15 @@ export const AudioAnalysisProvider = ({
           "chroma",
           "spectralCentroid",
           "spectralKurtosis",
+          "rms",
+          "spectralRolloff",
+          "loudness",
+          "spectralCrest",
+          "zcr",
+          // "zeroCrossingRate",
         ],
         callback: (features: MeydaFeaturesObject) => {
-          console.log(features);
+          setFeatures(features);
           // Here you can use the extracted features to drive your visualization
           // For example, adjusting size based on 'energy' or color based on 'spectralCentroid'
         },
