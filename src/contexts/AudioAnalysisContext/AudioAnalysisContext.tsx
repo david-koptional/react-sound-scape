@@ -1,6 +1,6 @@
+import Meyda, { MeydaFeaturesObject } from "meyda";
 import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { useSharedAudio } from "../SharedAudioContext/AudioContext";
-import Meyda, { MeydaAudioFeature, MeydaFeaturesObject } from "meyda";
 
 // Define the context data type
 interface AudioAnalysisData {
@@ -8,6 +8,7 @@ interface AudioAnalysisData {
   bufferLength: number;
   dataArray: Uint8Array;
   bassLevel: number;
+  features: MeydaFeaturesObject | null;
 }
 
 // Create the context
@@ -106,8 +107,9 @@ export const AudioAnalysisProvider = ({
       bufferLength,
       bassLevel,
       dataArray,
+      features,
     };
-  }, [analyser, bassLevel, bufferLength, dataArray]);
+  }, [analyser, bassLevel, bufferLength, dataArray, features]);
 
   return (
     <AudioAnalysisContext.Provider value={contextValue}>{children}</AudioAnalysisContext.Provider>
