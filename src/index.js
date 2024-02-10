@@ -1,3 +1,4 @@
+import { AudioVisualizerWithMatter } from "./components/MatterAudioVisualizer/MatterAudioVisualizer";
 import { AudioVisualizer } from "./components/CanvasShapesAudioVisualizer/index";
 import { FrequencyBars } from "./components/CanvasFrequencyBars";
 import { FrequencyLineGraph } from "./components/CanvasFrequencyLineGraph/CanvasFrequencyLineGraph";
@@ -11,5 +12,5 @@ import { Circle } from "./canvas/Circle";
 import { Square } from "./canvas/Square";
 import { Triangle } from "./canvas/Triangle";
 import { Diamond } from "./canvas/Diamond";
-export { SharedAudioProvider, AudioAnalysisProvider, RespondToBass, FrequencyBars, FrequencyLineGraph, AudioVisualizer, useAudioAnalysis, useSharedAudio, Shape, Square, Circle, Diamond, Triangle, };
+export { SharedAudioProvider, AudioAnalysisProvider, RespondToBass, FrequencyBars, FrequencyLineGraph, AudioVisualizer, useAudioAnalysis, useSharedAudio, Shape, Square, Circle, Diamond, Triangle, AudioVisualizerWithMatter, };
 //# sourceMappingURL=index.js.map

@@ -1,3 +1,4 @@
+import { AudioVisualizerWithMatter } from "./components/MatterAudioVisualizer/MatterAudioVisualizer";
 import { AudioVisualizer } from "./components/CanvasShapesAudioVisualizer/index";
 import { FrequencyBars } from "./components/CanvasFrequencyBars";
 import { FrequencyLineGraph } from "./components/CanvasFrequencyLineGraph/CanvasFrequencyLineGraph";
@@ -26,4 +27,5 @@ export {
   Circle,
   Diamond,
   Triangle,
+  AudioVisualizerWithMatter,
 };
