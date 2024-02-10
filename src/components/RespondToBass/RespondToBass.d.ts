@@ -14,5 +14,5 @@ interface RespondToBassProps {
     onBassChange?: (bassLevel: number) => void;
     animationThreshold?: number;
 }
-export declare const RespondToBass: ({ children, rotate, maxScaleMultiplier, maxRotateMultiplier, animationDuration, easingFunction, maxBassLevel, initialScale, initialRotation, className, style, onBassChange, animationThreshold, }: RespondToBassProps) => React.JSX.Element;
+export declare const RespondToBass: ({ children, rotate, maxScaleMultiplier, maxRotateMultiplier, animationDuration, easingFunction, maxBassLevel, initialScale, initialRotation, className, style, onBassChange, animationThreshold, }: RespondToBassProps) => import("react/jsx-runtime").JSX.Element;
 export {};

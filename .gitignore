@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 src/*.js
+src/*.d.ts
 
 
 # Editor directories and files

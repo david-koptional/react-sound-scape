@@ -11,7 +11,7 @@ export declare const SharedAudioContext: React.Context<{
 }>;
 export declare const SharedAudioProvider: ({ children }: {
     children: React.ReactNode;
-}) => React.JSX.Element;
+}) => import("react/jsx-runtime").JSX.Element;
 export declare const useSharedAudio: () => {
     audio: HTMLAudioElement;
     setAudioSource: (src: string) => void;
