@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
-import { SharedAudioProvider } from "./contexts/SharedAudioContext";
-import { AudioAnalysisProvider } from "./contexts/AudioAnalysisContext";
+import { SharedAudioProvider } from "./contexts/SharedAudioContext/AudioContext";
+import { AudioAnalysisProvider } from "./contexts/AudioAnalysisContext/AudioAnalysisContext";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

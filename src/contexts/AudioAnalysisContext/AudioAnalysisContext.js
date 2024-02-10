@@ -34,6 +34,7 @@ export const AudioAnalysisProvider = ({ children, }) => {
                     "loudness",
                     "spectralCrest",
                     "zcr",
+                    "beat",
                     // "zeroCrossingRate",
                 ],
                 callback: (features) => {

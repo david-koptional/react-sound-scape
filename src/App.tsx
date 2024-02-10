@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import { AudioVisualizerWithMatter } from "./components/MatterAudioVisualizer/MatterAudioVisualizer";
 import { useSharedAudio } from "./contexts/SharedAudioContext/AudioContext";
 
 import sample from "./assets/sound/ah_music_90_chasescene_ful_Dm.wav";
+import { AudioVisualizer } from "./components/CanvasShapesAudioVisualizer";
 
 function App() {
   const { setAudioSource, playAudio } = useSharedAudio();
@@ -19,7 +19,7 @@ function App() {
       >
         Play
       </button>
-      {<AudioVisualizerWithMatter />}
+      <AudioVisualizer />
     </div>
   );
 }

@@ -1,28 +1,16 @@
-export type ShapeType = {
+type ShapeType = "circle" | "square" | "triangle" | "diamond";
+export interface BaseShape {
     x: number;
     y: number;
     size: number;
     color: string;
-    velocity: number;
-    direction: number;
     ctx: CanvasRenderingContext2D;
-    movementPattern: (shape: ShapeType) => ShapeType;
+    type: ShapeType;
     draw: () => void;
-    wrappedDraw: () => void;
     update: () => void;
-    scaleSizeWithBass: (bassFrequency: number) => void;
-    keepWithinBounds: (bounds: {
-        width: number;
-        height: number;
-    }) => void;
-    changeMovementPatternsWithTheBeat: (beat: boolean) => void;
-    rotate: (angle: number) => void;
-    globalAlpha: number;
-    shadow: {
-        color: string;
-        blur: number;
-        offsetX: number;
-        offsetY: number;
-    };
-};
-export declare function Shape(x: number, y: number, velocity: number, direction: number, size: number, color: string, ctx: CanvasRenderingContext2D, movementPatterns: ((shape: ShapeType) => ShapeType)[]): ShapeType;
+}
+export declare function createBaseShape(x: number, y: number, size: number, color: string, ctx: CanvasRenderingContext2D, type: ShapeType): BaseShape;
+export declare function withSizeChangeOnBeat(shape: BaseShape, beat: boolean, scaleFactor: number): BaseShape;
+export declare function withColorChangeOnBeat(shape: BaseShape, beat: boolean, newColor: string): BaseShape;
+export declare function withDirectionChangeOnBeat(shape: BaseShape, beat: boolean, newDirection: number): BaseShape;
+export {};

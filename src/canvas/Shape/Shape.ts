@@ -1,6 +1,6 @@
 type ShapeType = "circle" | "square" | "triangle" | "diamond";
 
-interface BaseShape {
+export interface BaseShape {
   x: number;
   y: number;
   size: number;
