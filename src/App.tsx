@@ -1,35 +1,27 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect } from "react";
+import { AudioVisualizerWithMatter } from "./components/MatterAudioVisualizer/MatterAudioVisualizer";
+import { useSharedAudio } from "./contexts/SharedAudioContext/AudioContext";
+
+import sample from "./assets/sound/ah_music_90_chasescene_ful_Dm.wav";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const { setAudioSource, playAudio } = useSharedAudio();
+
+  useEffect(() => {
+    setAudioSource(sample);
+  }, [setAudioSource]);
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div style={{ width: "100%", height: "100%", overflow: "hidden" }}>
+      <button
+        onClick={playAudio}
+        style={{ border: "4px solid red", position: "fixed", top: 5, right: 5, zIndex: 5000 }}
+      >
+        Play
+      </button>
+      {<AudioVisualizerWithMatter />}
+    </div>
+  );
 }
 
-export default App
+export default App;

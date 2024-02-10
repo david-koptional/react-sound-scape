@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
+import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { useSharedAudio } from "../SharedAudioContext/AudioContext";
+import Meyda, { MeydaAudioFeature, MeydaFeaturesObject } from "meyda";
 
 // Define the context data type
 interface AudioAnalysisData {
@@ -8,6 +9,27 @@ interface AudioAnalysisData {
   dataArray: Uint8Array;
   bassLevel: number;
 }
+
+const featureExtractors: MeydaAudioFeature[] = [
+  "amplitudeSpectrum",
+  "spectralCentroid",
+  "spectralRolloff",
+  "spectralFlatness",
+  "spectralSlope",
+  "spectralSpread",
+  "spectralSkewness",
+  "spectralKurtosis",
+  "zcr",
+  "loudness",
+  "perceptualSpread",
+  "perceptualSharpness",
+  "mfcc",
+  "rms",
+  "energy",
+  "chroma",
+  "spectralFlux",
+  "buffer",
+];
 
 // Create the context
 const AudioAnalysisContext = createContext<AudioAnalysisData | null>(null);
@@ -24,11 +46,34 @@ export const AudioAnalysisProvider = ({
   const [dataArray, setDataArray] = useState<Uint8Array>(new Uint8Array(0));
   const [bassLevel, setBassLevel] = useState<number>(0);
   const [isConnected, setIsConnected] = useState(false); // State to track connection
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const meydaAnalyzerRef = useRef<any>(null); // Reference to store the Meyda analyzer
+  const [features, setFeatures] = useState<MeydaFeaturesObject | null>(null);
 
   useEffect(() => {
     if (audio && audioContext && sourceNode) {
       const analyser = audioContext.createAnalyser();
       sourceNode.connect(analyser);
+      meydaAnalyzerRef.current = Meyda.createMeydaAnalyzer({
+        audioContext,
+        source: sourceNode,
+        bufferSize: 512,
+        featureExtractors: [
+          "energy",
+          "amplitudeSpectrum",
+          "chroma",
+          "spectralCentroid",
+          "spectralKurtosis",
+        ],
+        callback: (features: MeydaFeaturesObject) => {
+          console.log(features);
+          // Here you can use the extracted features to drive your visualization
+          // For example, adjusting size based on 'energy' or color based on 'spectralCentroid'
+        },
+      });
+
+      meydaAnalyzerRef.current.start();
+      console.log("Meyda analyzer started", meydaAnalyzerRef.current);
       analyser.connect(audioContext.destination);
       setIsConnected(true);
       analyser.fftSize = 2048;
@@ -39,6 +84,7 @@ export const AudioAnalysisProvider = ({
       setDataArray(dataArray);
 
       return () => {
+        meydaAnalyzerRef.current.stop();
         if (isConnected && sourceNode) {
           sourceNode.disconnect(analyser);
           analyser.disconnect(audioContext.destination);
