@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { useAudioAnalysis } from "../contexts/AudioAnalysisContext/AudioAnalysisContext";
+import { useAudioAnalysis } from "../../contexts/AudioAnalysisContext/AudioAnalysisContext";
 
 export const useAudioResponsiveSize = (baseSize: number) => {
   const { bassLevel } = useAudioAnalysis();

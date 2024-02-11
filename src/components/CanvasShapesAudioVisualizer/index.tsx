@@ -1,12 +1,13 @@
-import React, { useRef, useEffect } from "react";
-import useShapes from "../../hooks/useShapes";
-import { createBaseShape } from "../../canvas/Shape/Shape";
+import { useEffect, useRef } from "react";
+import { BaseShape, createBaseShape, withColorChangeOnBeat } from "../../canvas/Shape/Shape";
+import { useBeatDetection } from "../../hooks/useBeatDetection/useBeatDetection";
 
 export const AudioVisualizer = ({ numberOfShapes = 15 }) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
-  // Initialize shapes once and ensure `useShapes` hook is properly managing them
-  const { addShape, updateShapes, drawShapes } = useShapes();
+  const shapesRef = useRef<BaseShape[]>([]);
+
+  const beat = useBeatDetection();
 
   useEffect(() => {
     // Dynamically adjust the canvas size on resize
@@ -15,7 +16,6 @@ export const AudioVisualizer = ({ numberOfShapes = 15 }) => {
         canvasRef.current.width = window.innerWidth;
         canvasRef.current.height = window.innerHeight;
         // Trigger redraw after resizing
-        drawShapes();
       }
     };
 
@@ -24,33 +24,57 @@ export const AudioVisualizer = ({ numberOfShapes = 15 }) => {
 
     // Ensure cleanup is handled to prevent memory leaks
     return () => window.removeEventListener("resize", resizeCanvas);
-  }, [drawShapes]);
+  }, []);
+
+  useEffect(() => {
+    const ctx = canvasRef?.current?.getContext("2d");
+    console.log("CTX", ctx);
+    if (!ctx) {
+      return;
+    }
+
+    shapesRef.current = Array.from({ length: numberOfShapes }, () => {
+      const x = Math.random() * window.innerWidth;
+      const y = Math.random() * window.innerHeight;
+      const radius = Math.random() * 50 + 50;
+      const color = `hsl(${Math.random() * 360}, 50%, 50%)`;
+      return createBaseShape(x, y, radius, color, ctx, "circle");
+    });
+  }, [numberOfShapes]);
 
   useEffect(() => {
     const ctx = canvasRef.current?.getContext("2d");
-    if (ctx) {
-      // Moved inside useEffect to ensure ctx is valid and component is mounted
 
-      // Add shapes only once or based on specific triggers, not on every render
-      for (let i = 0; i < numberOfShapes; i++) {
-        // Assuming createBaseShape and addShape are adapted to handle ctx correctly
-        addShape(createBaseShape(100, 100, 50, "red", ctx, "circle"));
-      }
+    console.log({ ctx });
+    if (!ctx) return;
 
-      // Setup and use animation loop properly
-      const animate = () => {
-        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // Clear the canvas
-        updateShapes(); // Potentially update shapes' positions or properties
-        drawShapes(); // Redraw shapes
-        requestAnimationFrame(animate);
-      };
+    const animate = () => {
+      console.log("Hi");
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
-      // Start the animation loop
+      shapesRef.current.forEach((shape) => {
+        console.log({ beat });
+        // Example of updating shape properties based on beat
+        if (beat) {
+          withColorChangeOnBeat(shape, beat, "red"); // This might need to be adjusted based on how withColorChangeOnBeat is implemented
+        }
+        shape.update();
+        shape.draw();
+      });
+
       requestAnimationFrame(animate);
-    }
-  }, [numberOfShapes, addShape, updateShapes, drawShapes]);
+    };
+
+    const animationFrameId = requestAnimationFrame(animate);
+
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [beat]);
 
   return (
-    <canvas ref={canvasRef} className="fixed -z-10 top-0 left-0 w-full min-h-screen bg-[#303a4d]" />
+    <canvas
+      ref={canvasRef}
+      className="fixed -z-10 top-0 left-0"
+      style={{ width: "100vw", height: "100vh" }}
+    />
   );
 };

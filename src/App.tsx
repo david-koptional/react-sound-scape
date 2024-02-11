@@ -12,7 +12,7 @@ function App() {
   }, [setAudioSource]);
 
   return (
-    <div style={{ width: "100%", height: "100%", overflow: "hidden" }}>
+    <div style={{ width: "100vw", height: "100vh", overflow: "hidden", border: "1px solid red" }}>
       <button
         onClick={playAudio}
         style={{ border: "4px solid red", position: "fixed", top: 5, right: 5, zIndex: 5000 }}

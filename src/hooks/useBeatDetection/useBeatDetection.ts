@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Meyda, { MeydaFeaturesObject } from "meyda";
-import { useSharedAudio } from "../contexts/SharedAudioContext/AudioContext";
+import { useSharedAudio } from "../../contexts/SharedAudioContext/AudioContext";
 
 export const useBeatDetection = () => {
   const { audioContext, sourceNode } = useSharedAudio();

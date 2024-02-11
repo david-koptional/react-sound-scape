@@ -1,16 +1,15 @@
 import { useCallback, useEffect, useState } from "react";
-import { BaseShape, withSizeChangeOnBeat } from "../canvas/Shape/Shape";
-import { useBeatDetection } from "./useBeatDetection";
+import { BaseShape } from "../canvas/Shape/Shape";
 
 const useShapes = () => {
   const [shapes, setShapes] = useState<BaseShape[]>([]);
 
-  const beat = useBeatDetection();
+  // const beat = useBeatDetection();
 
-  useEffect(() => {
-    const updatedShapes = shapes.map((shape) => withSizeChangeOnBeat(shape, beat, 1.5));
-    setShapes(updatedShapes);
-  }, [beat, shapes]);
+  // useEffect(() => {
+  //   const updatedShapes = shapes.map((shape) => withSizeChangeOnBeat(shape, beat, 1.5));
+  //   setShapes(updatedShapes);
+  // }, [beat]);
 
   // Function to add shapes
   const addShape = useCallback((shape: BaseShape) => {
