@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useSharedAudio } from "./contexts/SharedAudioContext/AudioContext";
 
-import sample from "./assets/sound/ah_music_90_chasescene_ful_Dm.wav";
+import sample from "./assets/sound/bassy.wav";
 import { AudioVisualizer } from "./components/CanvasShapesAudioVisualizer";
 // import { AudioVisualizer } from "./components/CanvasShapesAudioVisualizer";
 
