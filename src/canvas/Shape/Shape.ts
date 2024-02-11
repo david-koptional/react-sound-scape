@@ -3,7 +3,7 @@ import { gsap } from "gsap";
 
 export type Tween = gsap.core.Tween | null;
 
-abstract class BaseShape {
+export abstract class BaseShape {
   x: number;
   y: number;
   size: number;
@@ -107,5 +107,27 @@ export class Square extends BaseShape {
   draw(): void {
     this.ctx.fillStyle = this.color;
     this.ctx.fillRect(this.x - this.size / 2, this.y - this.size / 2, this.size, this.size);
+  }
+}
+
+export class Triangle extends BaseShape {
+  constructor(
+    x: number,
+    y: number,
+    size: number,
+    color: string,
+    velocity: { x: number; y: number },
+    ctx: CanvasRenderingContext2D
+  ) {
+    super(x, y, size, color, velocity, ctx, "triangle");
+  }
+
+  draw(): void {
+    this.ctx.fillStyle = this.color;
+    this.ctx.beginPath();
+    this.ctx.moveTo(this.x, this.y - this.size / 2);
+    this.ctx.lineTo(this.x + this.size / 2, this.y + this.size / 2);
+    this.ctx.lineTo(this.x - this.size / 2, this.y + this.size / 2);
+    this.ctx.fill();
   }
 }

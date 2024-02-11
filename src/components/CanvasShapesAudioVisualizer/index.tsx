@@ -1,10 +1,10 @@
 import { useEffect, useRef } from "react";
-import { Circle } from "../../canvas/Shape/Shape"; // Ensure the Circle class is correctly imported
+import { BaseShape, Circle, Square, Triangle } from "../../canvas/Shape/Shape"; // Ensure the Circle class is correctly imported
 import { useBeatDetection } from "../../hooks/useBeatDetection/useBeatDetection";
 
 export const AudioVisualizer = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const circleRef = useRef<Circle | null>(null); // Store the circle instance
+  const baseShapesRef = useRef<BaseShape[] | null>(null); // Store the circle instance
 
   const CANVAS_WIDTH = window.innerWidth;
   const CANVAS_HEIGHT = window.innerHeight;
@@ -31,15 +31,54 @@ export const AudioVisualizer = () => {
 
     if (ctx) {
       // Initialize the circle and store it in the ref
-      circleRef.current = new Circle(100, 100, 20, "red", { x: 1, y: 1 }, ctx);
+      baseShapesRef.current = Array.from({ length: 15 }, () => {
+        const circle = new Circle(
+          Math.random() * CANVAS_WIDTH, // x
+          Math.random() * CANVAS_HEIGHT, // y
+          Math.random() * 100, // size
+          `hsl(${Math.random() * 360}, 50%, 50%)`, // color
+          { x: Math.random() * 2 - 1, y: Math.random() * 2 - 1 }, // velocity
+          ctx
+        );
+        const square = new Square(
+          Math.random() * CANVAS_WIDTH, // x
+          Math.random() * CANVAS_HEIGHT, // y
+          Math.random() * 100, // size
+          `hsl(${Math.random() * 360}, 50%, 50%)`, // color
+          { x: Math.random() * 2 - 1, y: Math.random() * 2 - 1 }, // velocity
+          ctx
+        );
+
+        const triangle = new Triangle(
+          Math.random() * CANVAS_WIDTH, // x
+          Math.random() * CANVAS_HEIGHT, // y
+          Math.random() * 100, // size
+          `hsl(${Math.random() * 360}, 50%, 50%)`, // color
+          { x: Math.random() * 2 - 1, y: Math.random() * 2 - 1 }, // velocity
+          ctx
+        );
+
+        switch (Math.floor(Math.random() * 3)) {
+          case 0:
+            return circle;
+          case 1:
+            return square;
+          case 2:
+            return triangle;
+          default:
+            return circle;
+        }
+      });
     }
-  }, []);
+  }, [CANVAS_HEIGHT, CANVAS_WIDTH]);
 
   useEffect(() => {
-    if (beatDetected && circleRef.current) {
+    if (beatDetected && baseShapesRef.current) {
       // Change color on beat detected
-      // circleRef.current.setColor(`hsl(${Math.random() * 360}, 50%, 50%)`);
-      circleRef.current.animateSize(Math.random() * 100);
+      // baseShapesRef.current.setColor(`hsl(${Math.random() * 360}, 50%, 50%)`);
+      baseShapesRef.current.forEach((shape) => {
+        shape.animateSize(Math.random() * 100, 0.5); // Animate the size
+      });
     }
   }, [beatDetected]);
 
@@ -50,9 +89,11 @@ export const AudioVisualizer = () => {
     const animate = () => {
       ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
-      if (circleRef.current) {
-        circleRef.current.update({ canvasWidth: CANVAS_WIDTH, canvasHeight: CANVAS_HEIGHT }); // Update the circle position
-        circleRef.current.draw(); // Draw the circle
+      if (baseShapesRef.current) {
+        baseShapesRef.current.forEach((shape) => {
+          shape.update({ canvasHeight: CANVAS_HEIGHT, canvasWidth: CANVAS_WIDTH });
+          shape.draw();
+        });
       }
 
       requestAnimationFrame(animate);
@@ -65,7 +106,7 @@ export const AudioVisualizer = () => {
       const id = requestAnimationFrame(animate);
       cancelAnimationFrame(id);
     };
-  }, []);
+  }, [CANVAS_HEIGHT, CANVAS_WIDTH]);
 
   return (
     <canvas
