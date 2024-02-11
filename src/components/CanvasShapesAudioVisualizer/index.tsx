@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { BaseShape, Circle, Square, Triangle } from "../../canvas/Shape/Shape"; // Ensure the Circle class is correctly imported
 import { useBeatDetection } from "../../hooks/useBeatDetection/useBeatDetection";
+import { useBassDetection } from "../../hooks/useBassDetection/useBassDetection";
 
 export const AudioVisualizer = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -10,6 +11,10 @@ export const AudioVisualizer = () => {
   const CANVAS_HEIGHT = window.innerHeight;
 
   const { beatDetected } = useBeatDetection();
+
+  const { bassEnergy } = useBassDetection();
+
+  console.log(bassEnergy);
 
   useEffect(() => {
     const resizeCanvas = () => {
@@ -83,8 +88,32 @@ export const AudioVisualizer = () => {
   }, [beatDetected]);
 
   useEffect(() => {
+    if (baseShapesRef.current) {
+      if (bassEnergy > 160) {
+        // Pause movement only if not already paused
+        baseShapesRef.current.forEach((shape) => {
+          if (!shape.previousVelocity) {
+            // Check if the shape is moving
+            shape.pauseMovement();
+          }
+        });
+      } else {
+        // Resume movement only if not already moving
+        baseShapesRef.current.forEach((shape) => {
+          if (shape.previousVelocity) {
+            // Check if the shape is paused
+            shape.resumeMovement();
+          }
+        });
+      }
+    }
+  }, [bassEnergy]);
+
+  useEffect(() => {
     const ctx = canvasRef.current?.getContext("2d");
     if (!ctx) return;
+
+    let animationFrameId: number;
 
     const animate = () => {
       ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
@@ -96,15 +125,13 @@ export const AudioVisualizer = () => {
         });
       }
 
-      requestAnimationFrame(animate);
+      animationFrameId = requestAnimationFrame(animate);
     };
 
-    requestAnimationFrame(animate); // Start the animation loop
+    animate();
 
-    // It's a good practice to clean up the animation frame on component unmount
     return () => {
-      const id = requestAnimationFrame(animate);
-      cancelAnimationFrame(id);
+      cancelAnimationFrame(animationFrameId); // Correct cleanup using the animation frame ID
     };
   }, [CANVAS_HEIGHT, CANVAS_WIDTH]);
 

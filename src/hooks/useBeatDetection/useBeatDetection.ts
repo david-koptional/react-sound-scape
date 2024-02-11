@@ -10,7 +10,6 @@ export const useBeatDetection = () => {
   const energy = useMemo(() => features?.energy ?? 0, [features?.energy]);
 
   useEffect(() => {
-    console.log("energy", energy);
     // Update energy history
     // For example, keep the last 43 frames (approximately 1 second of history if analyzing at 43Hz)
     const historyLimit = 43;

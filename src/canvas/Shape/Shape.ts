@@ -32,6 +32,8 @@ export abstract class BaseShape {
     this.tween = null;
   }
 
+  previousVelocity: { x: number; y: number } | null = null;
+
   abstract draw(): void;
 
   update({ canvasWidth, canvasHeight }: { canvasWidth: number; canvasHeight: number }): void {
@@ -65,6 +67,21 @@ export abstract class BaseShape {
       ease: "power1.inOut",
       onUpdate: () => this.draw(), // Optional: Redraw on each update if necessary
     });
+  }
+
+  pauseMovement(): void {
+    if (!this.previousVelocity) {
+      // Only save the velocity if not already paused
+      this.previousVelocity = { ...this.velocity };
+      this.velocity = { x: 0, y: 0 }; // Stop the shape by setting its velocity to 0
+    }
+  }
+
+  resumeMovement(): void {
+    if (this.previousVelocity) {
+      this.velocity = { ...this.previousVelocity }; // Restore the saved velocity
+      this.previousVelocity = null; // Clear the saved velocity
+    }
   }
 
   setVelocity(x: number, y: number): void {

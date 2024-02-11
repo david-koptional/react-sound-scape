@@ -49,8 +49,6 @@ export const AudioAnalysisProvider = ({
           "loudness",
           "spectralCrest",
           "zcr",
-          // "beat",
-          // "zeroCrossingRate",
         ],
         callback: (features: MeydaFeaturesObject) => {
           setFeatures(features);
