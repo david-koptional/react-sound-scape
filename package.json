@@ -7,7 +7,7 @@
   "module": "dist/react-soundscape.es.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "dev": "vite --config ../vite.config.ts",
+    "dev": "vite",
     "build": "tsc && vite --config vite.config.build.js",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
