@@ -1,47 +1,47 @@
-import { useState, useEffect } from "react";
-import Meyda, { MeydaFeaturesObject } from "meyda";
-import { useSharedAudio } from "../../contexts/SharedAudioContext/AudioContext";
+import { useEffect, useMemo, useState } from "react";
+import { useAudioAnalysis } from "../../contexts/AudioAnalysisContext/AudioAnalysisContext";
 
 export const useBeatDetection = () => {
-  const { audioContext, sourceNode } = useSharedAudio();
-  const [beat, setBeat] = useState(false);
+  const { features } = useAudioAnalysis();
   const [energyHistory, setEnergyHistory] = useState<number[]>([]);
+  const [beatDetected, setBeatDetected] = useState<boolean>(false);
+
+  // Assuming 'energy' feature is updated in real-time by your audio analysis context
+  const energy = useMemo(() => features?.energy ?? 0, [features?.energy]);
 
   useEffect(() => {
-    if (!audioContext || !sourceNode) return;
-    const analyzer = Meyda.createMeydaAnalyzer({
-      audioContext,
-      source: sourceNode,
-      bufferSize: 512,
-      featureExtractors: ["energy"],
-      callback: ({ energy }: MeydaFeaturesObject) => {
-        // Simple beat detection algorithm:
-        const energyThreshold = 0.9; // Adjust based on your needs
-        const historyLength = 43; // Number of frames to consider for averaging
-        const beatSensitivity = 1.3; // Multiplier for average energy to count as a beat
+    console.log("energy", energy);
+    // Update energy history
+    // For example, keep the last 43 frames (approximately 1 second of history if analyzing at 43Hz)
+    const historyLimit = 43;
+    setEnergyHistory((prev) => {
+      const newEnergyHistory = [...prev, energy].slice(-historyLimit);
 
-        // Update energy history
-        const updatedHistory = [...energyHistory, energy].slice(-historyLength);
-        setEnergyHistory(updatedHistory);
+      if (newEnergyHistory.length === historyLimit) {
+        const averageEnergy = newEnergyHistory.reduce((acc, val) => acc + val, 0) / historyLimit;
+        const energyThreshold = averageEnergy * 1.5; // Example threshold multiplier
+        const currentBeatDetected = energy > energyThreshold;
 
-        // Calculate average energy from the history
-        const avgEnergy = updatedHistory.reduce((acc, cur) => acc + cur, 0) / updatedHistory.length;
+        setBeatDetected(currentBeatDetected);
+      }
 
-        // Determine if the current energy represents a beat
-        if (energy > avgEnergy * beatSensitivity && energy > energyThreshold) {
-          setBeat(true);
-          // Reset beat after a short delay to "simulate" the beat duration
-          setTimeout(() => setBeat(false), 100); // Adjust delay as needed
-        }
-      },
+      return newEnergyHistory;
     });
 
-    analyzer.start();
+    // Beat detection logic
+  }, [energy]);
 
-    return () => {
-      analyzer.stop();
-    };
-  }, [audioContext, sourceNode, energyHistory]);
+  // Reset beat detection flag after it's been set to true
+  useEffect(() => {
+    if (beatDetected) {
+      const timer = setTimeout(() => {
+        setBeatDetected(false);
+      }, 100); // Reset after a short delay to avoid constant true state
 
-  return beat;
+      return () => clearTimeout(timer);
+    }
+  }, [beatDetected]);
+
+  // Return whether a beat was detected, and optionally other useful info like current energy
+  return { beatDetected, energy, energyHistory };
 };

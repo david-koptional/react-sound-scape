@@ -49,7 +49,7 @@ export const AudioAnalysisProvider = ({
           "loudness",
           "spectralCrest",
           "zcr",
-          "beat",
+          // "beat",
           // "zeroCrossingRate",
         ],
         callback: (features: MeydaFeaturesObject) => {
@@ -59,7 +59,11 @@ export const AudioAnalysisProvider = ({
         },
       });
 
-      meydaAnalyzerRef.current.start();
+      if (isAudioPlaying) {
+        meydaAnalyzerRef.current.start();
+      } else {
+        meydaAnalyzerRef.current.stop();
+      }
       console.log("Meyda analyzer started", meydaAnalyzerRef.current);
       analyser.connect(audioContext.destination);
       setIsConnected(true);
@@ -79,7 +83,7 @@ export const AudioAnalysisProvider = ({
         }
       };
     }
-  }, [audio, audioContext, isConnected, sourceNode]);
+  }, [audio, audioContext, isAudioPlaying, isConnected, sourceNode]);
 
   useEffect(() => {
     let animationFrameId: number;
